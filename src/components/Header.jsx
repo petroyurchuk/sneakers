@@ -1,5 +1,5 @@
 import React from "react";
-const Header = () => {
+const Header = ({ handleCart }) => {
   return (
     <header className="d-flex justify-between align-center p-40">
       <div className="headerLeft d-flex align-center">
@@ -19,11 +19,12 @@ const Header = () => {
       <ul className="headerRight d-flex">
         <li className="mr-30">
           <img
-            className="mr-10"
+            className="mr-10 cu-p"
             src="/img/cart.svg"
             width={18}
             height={18}
             alt="cart"
+            onClick={handleCart}
           />
           <span>500 ₴</span>
         </li>
