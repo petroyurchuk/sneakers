@@ -3,12 +3,12 @@ import styles from "./Card.module.scss";
 
 const Card = ({ title, price, imageUrl }) => {
   const [isLiked, setIsLiked] = React.useState(false);
-  const [isAdd, setIsAdd] = React.useState(false);
+  const [isAdded, setIsAdded] = React.useState(false);
   const handleLike = () => {
     setIsLiked(!isLiked);
   };
   const handleAdd = () => {
-    setIsAdd(!isAdd);
+    setIsAdded(!isAdded);
   };
   return (
     <div className={styles.card}>
@@ -26,14 +26,13 @@ const Card = ({ title, price, imageUrl }) => {
           <span>Ціна:</span>
           <b>{price} ₴</b>
         </div>
-        <button className="button" onClick={handleAdd}>
-          <img
-            src={`/img/${isAdd ? "btn-checked" : "plus"}.svg`}
-            width={11}
-            height={11}
-            alt="plus"
-          />
-        </button>
+
+        <img
+          onClick={handleAdd}
+          className="cu-p"
+          src={`/img/${isAdded ? "btn-checked" : "plus"}.svg`}
+          alt="plus"
+        />
       </div>
     </div>
   );

@@ -17,14 +17,13 @@ const Header = ({ handleCart }) => {
       </div>
 
       <ul className="headerRight d-flex">
-        <li className="mr-30">
+        <li className="mr-30 cu-p" onClick={handleCart}>
           <img
             className="mr-10 cu-p"
             src="/img/cart.svg"
             width={18}
             height={18}
             alt="cart"
-            onClick={handleCart}
           />
           <span>500 ₴</span>
         </li>

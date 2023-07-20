@@ -1,40 +1,24 @@
+import axios from "axios";
 import React from "react";
 import Card from "./components/Card";
 import Drawer from "./components/Drawer";
 import Header from "./components/Header";
-const arr = [
-  {
-    title: "Мужские Кроссовки Nike Blazer Mid Suede",
-    price: 12999,
-    imageUrl: "/img/sneakers/1.jpg",
-  },
-  {
-    title: "Мужские Кроссовки Nike Air Max 270",
-    price: 15600,
-    imageUrl: "/img/sneakers/2.jpg",
-  },
-  {
-    title: "Мужские Кроссовки Nike Blazer Mid Suede",
-    price: 8499,
-    imageUrl: "/img/sneakers/3.jpg",
-  },
-  {
-    title: "Кроссовки Puma X Aka Boku Future Rider",
-    price: 8999,
-    imageUrl: "/img/sneakers/4.jpg",
-  },
-];
+
 function App() {
+  const [items, setItems] = React.useState([]);
+  React.useEffect(() => {
+    axios
+      .get(`https://64b9016b79b7c9def6c06a47.mockapi.io/items`)
+      .then((response) => setItems(response.data));
+  }, []);
+
   const [isClickedCart, setIsClickedCart] = React.useState(false);
-  const handleCart = () => {
-    setIsClickedCart(true);
-  };
-  const handleClose = () => {
-    setIsClickedCart(false);
-  };
+  const handleCart = () => setIsClickedCart(true);
+  const handleClose = () => setIsClickedCart(false);
+
   return (
     <div className="wrapper clear">
-      <Drawer isClickedCart={isClickedCart} handleClose={handleClose} />
+      {isClickedCart && <Drawer handleClose={handleClose} />}
       <Header handleCart={handleCart} />
       <div className="content p-40">
         <div className="d-flex align-center justify-between mb-40">
@@ -44,8 +28,8 @@ function App() {
             <input placeholder="Search..." />
           </div>
         </div>
-        <div className="d-flex justify-center">
-          {arr.map(({ title, imageUrl, price }, index) => (
+        <div className="d-flex justify-center flex-wrap">
+          {items.map(({ title, imageUrl, price }, index) => (
             <Card key={index} imageUrl={imageUrl} title={title} price={price} />
           ))}
         </div>
