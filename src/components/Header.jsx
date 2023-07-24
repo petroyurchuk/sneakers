@@ -1,19 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 const Header = ({ handleCart }) => {
   return (
     <header className="d-flex justify-between align-center p-40">
       <div className="headerLeft d-flex align-center">
-        <img
-          className="mr-15"
-          width={40}
-          height={40}
-          src="/img/logo.png"
-          alt="logo"
-        />
-        <div>
-          <h3 className="text-uppercase">Sneakers</h3>
-          <p className="opacity-5">Магазин найкращих кросівок</p>
-        </div>
+        <Link to={"/"}>
+          <img
+            className="mr-15"
+            width={40}
+            height={40}
+            src="/img/logo.png"
+            alt="logo"
+          />
+          <div>
+            <h3 className="text-uppercase">Sneakers</h3>
+            <p className="opacity-5">Магазин найкращих кросівок</p>
+          </div>
+        </Link>
       </div>
 
       <ul className="headerRight d-flex align-center">
@@ -28,7 +31,9 @@ const Header = ({ handleCart }) => {
           <span>500 ₴</span>
         </li>
         <li className="mr-30 cu-p">
-          <img src="./img/heart.svg" alt="favorites" />
+          <Link to={"/favorites"}>
+            <img src="./img/heart.svg" alt="favorites" />
+          </Link>
         </li>
         <li>
           <svg
