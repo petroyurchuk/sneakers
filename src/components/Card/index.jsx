@@ -1,13 +1,15 @@
 import React from "react";
 import styles from "./Card.module.scss";
 
-const Card = ({ title, price, imageUrl }) => {
+const Card = ({ title, price, imageUrl, onPlus, onFavorite }) => {
   const [isLiked, setIsLiked] = React.useState(false);
   const [isAdded, setIsAdded] = React.useState(false);
   const handleLike = () => {
+    onFavorite({ title, price, imageUrl });
     setIsLiked(!isLiked);
   };
   const handleAdd = () => {
+    onPlus({ title, price, imageUrl });
     setIsAdded(!isAdded);
   };
   return (

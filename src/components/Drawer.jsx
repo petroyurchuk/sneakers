@@ -1,5 +1,6 @@
 import React from "react";
-const Drawer = ({ isClickedCart, handleClose }) => {
+import CartItem from "./CartItem/CartItem";
+const Drawer = ({ items, handleClose, onRemove }) => {
   return (
     <div className="overlay">
       <div className="drawer d-flex flex-column">
@@ -12,43 +13,57 @@ const Drawer = ({ isClickedCart, handleClose }) => {
             onClick={handleClose}
           />
         </h2>
-
-        <div className="items">
-          <div className="cartItem d-flex align-center mb-20">
-            <div
-              style={{
-                backgroundImage: "url(/img/sneakers/1.jpg)",
-              }}
-              className="cartItemImg"
-            ></div>
-            <div className="mr-20 flex">
-              <p className="mb-5">Чоловічі кросівки Nike Air Max 270</p>
-              <b> 4 599 ₴</b>
+        {items.length > 0 ? (
+          <div>
+            <div className="items">
+              {items.map(({ imageUrl, title, price, id }) => (
+                <CartItem
+                  key={id}
+                  title={title}
+                  imageUrl={imageUrl}
+                  price={price}
+                  id={id}
+                  onRemove={onRemove}
+                />
+              ))}
             </div>
-            <img
-              className="remove-btn"
-              src="/img/btn-remove.svg"
-              alt="remove"
-            />
+            <div className="cartTotalBlock">
+              <ul>
+                <li>
+                  <span>Total:</span>
+                  <div></div>
+                  <b>4 499 ₴</b>
+                </li>
+                <li>
+                  <span>Tax 5%: </span>
+                  <div></div>
+                  <b>254.50 ₴</b>
+                </li>
+              </ul>
+              <button className="greenButton">
+                Оформити замовлення <img src="/img/arrow.svg" alt="arrow" />
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="cartTotalBlock">
-          <ul>
-            <li>
-              <span>Total:</span>
-              <div></div>
-              <b>4 499 ₴</b>
-            </li>
-            <li>
-              <span>Tax 5%: </span>
-              <div></div>
-              <b>254.50 ₴</b>
-            </li>
-          </ul>
-          <button className="greenButton">
-            Оформити замовлення <img src="/img/arrow.svg" alt="" />
-          </button>
-        </div>
+        ) : (
+          <div className="cartEmpty d-flex align-center justify-center flex-column flex">
+            <img
+              className="mb-20"
+              width="120px"
+              height="120px"
+              src="/img/empty-cart.jpg"
+              alt="Empty"
+            />
+            <h2>Корзина пустая</h2>
+            <p className="opacity-6">
+              Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.
+            </p>
+            <button onClick={handleClose} className="greenButton">
+              <img src="/img/arrow.svg" alt="Arrow" />
+              Вернуться назад
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
