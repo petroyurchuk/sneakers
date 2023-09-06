@@ -1,6 +1,39 @@
 import React from "react";
+import AppContext from "../context";
 import CartItem from "./CartItem/CartItem";
-const Drawer = ({ items, handleClose, onRemove }) => {
+import Info from "./Info";
+import axios from "axios";
+import { useCart } from "../hooks/useCart";
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const Drawer = () => {
+  const { handleClose, cartItems, setCartItems } = React.useContext(AppContext);
+  const [orderId, setOrderId] = React.useState(null);
+  const [isOrderComplete, setIsOrderComplete] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const { totalPrice } = useCart();
+  const onClickOrder = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        "https://64f3b6dcedfa0459f6c6c775.mockapi.io/ordersSneakers",
+        { items: cartItems }
+      );
+      setOrderId(data.id);
+      setIsOrderComplete(true);
+      setCartItems([]);
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        console.log(item);
+        await axios.delete(
+          "https://64b9016b79b7c9def6c06a47.mockapi.io/cart/" + item.id
+        );
+        await delay(1000);
+      }
+    } catch (error) {
+      alert("Помилка при створенні замовлення :(");
+    }
+    setIsLoading(false);
+  };
   return (
     <div className="overlay">
       <div className="drawer d-flex flex-column">
@@ -13,18 +46,11 @@ const Drawer = ({ items, handleClose, onRemove }) => {
             onClick={handleClose}
           />
         </h2>
-        {items.length > 0 ? (
+        {cartItems.length > 0 ? (
           <div>
             <div className="items">
-              {items.map(({ imageUrl, title, price, id }) => (
-                <CartItem
-                  key={id}
-                  title={title}
-                  imageUrl={imageUrl}
-                  price={price}
-                  id={id}
-                  onRemove={onRemove}
-                />
+              {cartItems.map((item) => (
+                <CartItem key={item.id} {...item} />
               ))}
             </div>
             <div className="cartTotalBlock">
@@ -32,37 +58,38 @@ const Drawer = ({ items, handleClose, onRemove }) => {
                 <li>
                   <span>Total:</span>
                   <div></div>
-                  <b>4 499 ₴</b>
+                  <b>{totalPrice} ₴</b>
                 </li>
                 <li>
                   <span>Tax 5%: </span>
                   <div></div>
-                  <b>254.50 ₴</b>
+                  <b>{totalPrice * 0.05} ₴</b>
                 </li>
               </ul>
-              <button className="greenButton">
-                Оформити замовлення <img src="/img/arrow.svg" alt="arrow" />
+              <button
+                disabled={isLoading}
+                onClick={onClickOrder}
+                className="greenButton"
+              >
+                Оформити замовлення
+                <img src="/img/arrow.svg" alt="arrow" />
               </button>
             </div>
           </div>
         ) : (
-          <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-            <img
-              className="mb-20"
-              width="120px"
-              height="120px"
-              src="/img/empty-cart.jpg"
-              alt="Empty"
-            />
-            <h2>Корзина пустая</h2>
-            <p className="opacity-6">
-              Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.
-            </p>
-            <button onClick={handleClose} className="greenButton">
-              <img src="/img/arrow.svg" alt="Arrow" />
-              Вернуться назад
-            </button>
-          </div>
+          <Info
+            title={isOrderComplete ? "Замовлення оформлене!" : "Кошик пустий"}
+            description={
+              isOrderComplete
+                ? `Ваше замовлення #${orderId} скоро буде передане в доставку`
+                : "Добавте хочаб  одну пару кросівок, щоб зробити замовлення."
+            }
+            image={
+              isOrderComplete
+                ? "/img/complete-order.jpg"
+                : "/img/empty-cart.jpg"
+            }
+          />
         )}
       </div>
     </div>

@@ -1,6 +1,8 @@
 import React from "react";
+import AppContext from "../../context";
 
-const CartItem = ({ id, price, imageUrl, title, onRemove }) => {
+const CartItem = ({ id, price, imageUrl, title }) => {
+  const { onRemoveItem } = React.useContext(AppContext);
   return (
     <div className="cartItem d-flex align-center mb-20">
       <div
@@ -14,7 +16,7 @@ const CartItem = ({ id, price, imageUrl, title, onRemove }) => {
         <b> {price} ₴</b>
       </div>
       <img
-        onClick={() => onRemove(id)}
+        onClick={() => onRemoveItem(id)}
         className="remove-btn"
         src="/img/btn-remove.svg"
         alt="remove"

@@ -1,12 +1,11 @@
 import React from "react";
 import Card from "../components/Card";
-const Home = ({
-  searchValue,
-  onAddToCart,
-  onAddToFavorite,
-  filteredItems,
-  setSearchValue,
-}) => {
+import AppContext from "../context";
+
+const Home = () => {
+  const { setSearchValue, isLoading, filteredItems, searchValue } =
+    React.useContext(AppContext);
+  
   const valueRef = React.useRef(null);
   const handleClearInput = () => {
     setSearchValue("");
@@ -14,6 +13,11 @@ const Home = ({
   };
   const onChangeSearchInput = (event) => {
     setSearchValue(event.target.value);
+  };
+  const renderItems = () => {
+    return (isLoading ? [...Array(8)] : filteredItems).map((item, index) => (
+      <Card key={index} isLoading={isLoading} {...item} />
+    ));
   };
   return (
     <div className="content p-40">
@@ -39,16 +43,7 @@ const Home = ({
           )}
         </div>
       </div>
-      <div className="d-flex justify-center flex-wrap">
-        {filteredItems.map((item) => (
-          <Card
-            key={item.id}
-            onPlus={(obj) => onAddToCart(obj)}
-            onFavorite={(obj) => onAddToFavorite(obj)}
-            {...item}
-          />
-        ))}
-      </div>
+      <div className="d-flex justify-center flex-wrap">{renderItems()}</div>
     </div>
   );
 };
