@@ -5,7 +5,7 @@ import AppContext from "../context";
 const Home = () => {
   const { setSearchValue, isLoading, filteredItems, searchValue } =
     React.useContext(AppContext);
-  
+
   const valueRef = React.useRef(null);
   const handleClearInput = () => {
     setSearchValue("");
@@ -21,11 +21,11 @@ const Home = () => {
   };
   return (
     <div className="content p-40">
-      <div className="d-flex align-center justify-between mb-40">
+      <div className="content__search ">
         <h1 className="">
           {searchValue ? `Пошук по ${searchValue}` : "Всі кросівки"}
         </h1>
-        <div className="search-block d-flex">
+        <div className="search-block ">
           <img src="/img/search.svg" alt="search" />
           <input
             ref={valueRef}

@@ -4,7 +4,7 @@ import { useCart } from "../hooks/useCart";
 const Header = ({ handleCart }) => {
   const { totalPrice } = useCart();
   return (
-    <header className="d-flex justify-between align-center p-40">
+    <header className="d-flex justify-between align-center ">
       <div className="headerLeft d-flex align-center">
         <Link to={"/"}>
           <img
@@ -21,8 +21,8 @@ const Header = ({ handleCart }) => {
         </Link>
       </div>
 
-      <ul className="headerRight d-flex align-center">
-        <li className="mr-30 cu-p" onClick={handleCart}>
+      <ul className="headerRight d-flex ">
+        <li className=" cu-p" onClick={handleCart}>
           <img
             className="mr-10 cu-p"
             src="/img/cart.svg"
